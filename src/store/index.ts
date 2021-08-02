@@ -1,12 +1,19 @@
-import { createStore } from 'vuex'
+import vuex, { StoreOptions } from 'vuex'
+import { user } from '@/store/modules/userModule'
 
-export default createStore({
-  state: {
+export interface RootState{
+  helloMessage:string
+}
+
+const store : StoreOptions<RootState>={
+  state:{
+    helloMessage:'This is the message',
+    
   },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
+  modules:{
+    user,
   }
-})
+} 
+
+
+export default new vuex.Store<RootState>(store)

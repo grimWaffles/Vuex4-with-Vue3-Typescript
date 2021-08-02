@@ -1,18 +1,44 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <h4>{{userInfo}}</h4>
+    <h4>{{error}}</h4>
+    <button @click="updateInfo">Update Information</button>
+    <button @click="clearEmail">Update email</button>
+    <button @click="displayError">Display Error</button>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+
+import { computed, defineComponent, ref } from 'vue';
+import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'Home',
-  components: {
-    HelloWorld,
+  setup(){
+    const store=useStore()
+
+    const userInfo=computed(()=>{return store.getters['getUserInfo']})
+
+    const error=ref('')
+    
+    const updateInfo= async ()=>{
+      console.log('Reached the function')
+      await store.dispatch('loadInfo')
+    }
+
+    const clearEmail=()=>{
+      store.commit("SET_EMAIL")
+    }
+
+    const displayError=()=>{
+      error.value='this is an error'
+    }
+
+
+    return { userInfo, updateInfo, clearEmail, error, displayError }
   },
+  
 });
 </script>
